@@ -10,7 +10,6 @@
 
 # production
 /build
-deploy-surge.sh
 
 # misc
 .DS_Store
