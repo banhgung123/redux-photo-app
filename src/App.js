@@ -1,8 +1,11 @@
+import { unwrapResult } from '@reduxjs/toolkit';
 import firebase from 'firebase';
 import React, { Suspense, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import productApi from './api/productApi';
 import './App.scss';
+import { getMe } from './app/userSlice';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
 import SignIn from './features/Auth/pages/SignIn';
@@ -18,6 +21,8 @@ const config = {
 firebase.initializeApp(config);
 
 function App() {
+	const dispatch = useDispatch();
+
 	useEffect(() => {
 		const fetchProducts = async () => {
 			const params = {
@@ -39,10 +44,20 @@ function App() {
 				return;
 			}
 
-			console.log('Logged in user', user.displayName);
+			// Get me when signed in
+			// const action = getMe();
+			try {
+				const actionResult = await dispatch(getMe());
+				const currentUser = unwrapResult(actionResult);
+				console.log('Logged in user: ', currentUser);
+			} catch (error) {
+				console.log('Failed to login ', error.message);
+			}
 
-			const token = await user.getIdToken();
-			console.log('Logged in user token: ', token);
+			// console.log('Logged in user', user.displayName);
+
+			// const token = await user.getIdToken();
+			// console.log('Logged in user token: ', token);
 		});
 
 		return () => unregisterAuthObserver();
@@ -64,7 +79,7 @@ function App() {
 				<BrowserRouter>
 					<Header />
 
-					{/* <button onClick={handleButtonClick}>Fetch Product List</button> */}
+					<button onClick={handleButtonClick}>Fetch Product List</button>
 					<Switch>
 						<Redirect exact from="/" to="/photos" />
 
