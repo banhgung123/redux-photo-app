@@ -64,7 +64,7 @@ function App() {
 				<BrowserRouter>
 					<Header />
 
-					<button onClick={handleButtonClick}>Fetch Product List</button>
+					{/* <button onClick={handleButtonClick}>Fetch Product List</button> */}
 					<Switch>
 						<Redirect exact from="/" to="/photos" />
 
