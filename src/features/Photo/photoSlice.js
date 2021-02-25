@@ -77,7 +77,7 @@ const initialPhotos = [
 ];
 
 const photo = createSlice({
-	name: 'photos',
+	name: 'photo',
 	initialState: initialPhotos,
 	reducers: {
 		addPhoto: (state, action) => {
